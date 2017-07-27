@@ -1,0 +1,4 @@
+﻿$testa1 = get-aduser -filter * -Properties * | Select cn, emailaddress, cannotchangepassword, enabled, lastlogondate, passwordexpired, passwordlastset, passwordneverexpires, samaccountname, whencreated, @{ Name = "PasswordAgeInDAYS"; E = { (Get-Date) - $_.PasswordLastSet } }
+$testa1 | ForEach-Object { $_.PasswordAgeInDays = ($_.PasswordAgeInDAYS.Days) }
+$testa1 | Export-Csv "C:\logs\files\AccountReview.csv"
+Send-MailMessage -from "some@address.com" -to "some@address.com" -body "User Account Monthly Review" -SmtpServer "yourserver.com" -Attachments "C:\logs\files\AccountReview.csv" -Subject "User Account Monthly Review"

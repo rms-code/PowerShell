@@ -1,0 +1,2 @@
+﻿$searchmsg = Search-ADAccount -AccountDisabled -SearchBase "ou=somestuff,DC=your,DC=ca" | where {$_.lastlogondate -lt (get-date).addmonths(-3)} | FT Name,LastLogonDate | out-string
+send-mailmessage -from "some@address.com" -to "some@address.com" -subject "Disabled Accounts past 90 days" -body $searchmsg -smtpServer 1.2.3.4
